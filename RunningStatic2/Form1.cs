@@ -12,12 +12,13 @@ namespace RunningStatic2
 {
     public partial class Form1 : Form
     {
+        Label label1;
         public Form1()
         {
             InitializeComponent();
             label1 = new Label();
             this.Load += Form_Load; //обработчик события закреплен на загрузке формы
-            //this.MouseMove += FormMouseMove;
+            this.MouseMove += FormMouseMove; //на движении мыши по форме закреплен обработчик FormMouseMove
         }
 
         private void Form_Load(object sender, EventArgs e)
@@ -30,25 +31,49 @@ namespace RunningStatic2
             label1.ForeColor = Color.White;
             label1.BackColor = Color.Orange;
             Controls.Add(label1);
-           //CenterLabel(label1); //метод центрирования лейбла
+            LabelCenter(label1); //метод центрирования лейбла
         }
         private void FormMouseMove(object sender, MouseEventArgs e)
-        {   //если указатель мыши ближе 20 px от левого края или ближе 20 px от правого края:
+        {   //если указатель мыши ближе 20 points от левого края или ближе 20 points от правого края:
             if ((e.X > label1.Location.X - 20 ) && (e.X < label1.Location.X + label1.Width  + 20)
-                //или если указатель мыши ближе 20 px от верхнего края или ближе 20 px от нижнего края:
-                || ((e.Y > label1.Location.Y - 20) && e.Y < label1.Location.Y + label1.Height +20)
+                //и если указатель мыши ближе 20 points от верхнего края или ближе 20 px от нижнего края:
+                && ((e.Y > label1.Location.Y - 20) && e.Y < label1.Location.Y + label1.Height +20)
                 )
-            {   //если указатель ближе 20 px слева - сдвинуть левый край на 10 px вправо  
+            {   
+                //если указатель ближе 20 pts слева - сдвинуть левый край на 10 points вправо  
                 //public double Left { get; set; } Возвращает или задает расстояние в точках между 
                 //левым краем Label и левым краем рабочего листа.
                 if (e.X > label1.Location.X - 20 && e.X < label1.Location.X) { label1.Left += 10; }
 
-                //
+                //или если указатель ближе 20 points от правого края  
                 else if (e.X < label1.Location.X + label1.Width + 20 && e.X > label1.Location.X + label1.Width)
-                { }
-            }
-                
+                { label1.Left -= 10; } //сдвинуть левый край на 10 точек влево относительно рабочей формы
 
+                //**По вертикальным координатам вместо Location.Y (+Height) использую методы Top и Bottom 
+                //или если указатель ближе 20 points от верхнего края (движение курсора сверху)  
+                else if (e.Y > label1.Top - 20 && e.Y < label1.Top)
+                {
+                    label1.Top += 10;
+                }
+                //если указатель ближе 20 pts от нижнего края (движение снизу)
+                else if (e.Y < label1.Bottom + 20 && e.Y > label1.Bottom)
+                {
+                    label1.Top -= 10;
+                }
+                //Проверка границ формы и возврат лейбла в центр
+                if ((label1.Location.X < 0 || label1.Location.X > ClientSize.Width - label1.Width) 
+                    || (label1.Location.Y < 0 || label1.Location.Y > ClientSize.Height - label1.Height))
+                {
+                    LabelCenter(label1);
+                }
+
+            }//конец условия приближения ближе 20 pts
+        } //конец метода-обработчика FormMouseMove
+
+        void LabelCenter(Label label) //центрирование «статика»
+        {
+            label.Left = (ClientSize.Width - label.Size.Width) / 2;
+            label.Top = (ClientSize.Height - label.Size.Height) / 2;
         }
-    }
+    } //конец класса формы
 }
