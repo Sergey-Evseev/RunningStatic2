@@ -64,7 +64,7 @@ namespace RunningStatic2
                 if ((label1.Location.X < 0 || label1.Location.X > ClientSize.Width - label1.Width) 
                     || (label1.Location.Y < 0 || label1.Location.Y > ClientSize.Height - label1.Height))
                 {
-                    LabelCenter(label1);
+                   LabelCenter(label1);
                 }
 
             }//конец условия приближения ближе 20 pts
