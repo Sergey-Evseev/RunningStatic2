@@ -61,7 +61,9 @@ namespace RunningStatic2
                     label1.Top -= 10;
                 }
                 //Проверка границ формы и возврат лейбла в центр
+                //если лейбл за левой границей формы либо правый край лейбла за правым краем формы
                 if ((label1.Location.X < 0 || label1.Location.X > ClientSize.Width - label1.Width) 
+                    //если лейбл выше верхнего края формы либо его нижний край за нижнем краем формы
                     || (label1.Location.Y < 0 || label1.Location.Y > ClientSize.Height - label1.Height))
                 {
                    LabelCenter(label1);
